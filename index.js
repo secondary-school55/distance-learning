@@ -14,7 +14,7 @@ const items = glob
 const itemsGroup = {};
 
 for (const item of items) {
-  const { year, className, classSub, lesson, title } = item.components;
+  const { year, className, classSub, lesson, date, title } = item.components;
 
   if (itemsGroup[year] === undefined) itemsGroup[year] = {};
 
@@ -28,6 +28,7 @@ for (const item of items) {
     itemsGroup[year][className][classSub][lesson] = [];
 
   itemsGroup[year][className][classSub][lesson].push({
+    date,
     title,
     route: item.route,
   });
@@ -55,14 +56,20 @@ function toLesson(components) {
     minusOne = 0;
   }
 
+  const titleBase = components[4 + minusOne].replace(
+    path.parse(components[4 + minusOne]).ext,
+    ""
+  );
+
+  const date = titleBase.slice(0, 5).trim();
+  const title = titleBase.slice(6).trim();
+
   return {
     year: components[0],
     className: components[1],
     classSub,
     lesson: components[3 + minusOne],
-    title: components[4 + minusOne].replace(
-      path.parse(components[4 + minusOne]).ext,
-      ""
-    ),
+    date,
+    title,
   };
 }
