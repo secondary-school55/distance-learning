@@ -8,7 +8,10 @@ const items = glob
   .filter((item) => path.parse(item).ext !== ".json")
   .map((item) => ({
     components: toLesson(item.split("/").slice(1)),
-    route: item.replace("public", ""),
+    route: `https://distance-learning.school55.pp.ua${item.replace(
+      "public",
+      ""
+    )}`,
   }));
 
 const itemsGroup = {};
@@ -42,7 +45,7 @@ const root =
 for (const key in itemsGroup) {
   fs.writeFileSync(
     path.join(root, "public", `${key}.json`),
-    JSON.stringify(itemsGroup[key], null, 2),
+    JSON.stringify(itemsGroup[key]),
     "utf8"
   );
 }
